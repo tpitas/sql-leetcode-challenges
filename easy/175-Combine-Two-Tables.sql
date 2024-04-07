@@ -61,4 +61,39 @@ There is no address in the address table for the personId = 1 so we return null 
 addressId = 1 contains information about the address of personId = 2
 */
 
--- 
+-- Solution
+-- create table person
+
+create table person (   
+    personId     int ,
+    lastName   varchar(55),
+    firstName  varchar(55)
+);
+
+-- create table address
+
+create table address (
+    addressId    int ,    
+    personId     int ,    
+    city   varchar(55),
+    state  varchar(55)
+);
+
+-- insert records to person 
+
+insert into person values
+(1, 'Wang', 'Allen'),
+(2, 'Alice', 'Bob');
+
+-- insert records to address
+
+insert into address values
+(1 , 2 , 'New York City' , 'New York  '),
+(2 , 3 , 'Leetcode' , 'California' );
+
+-- Solution
+
+select firstName, lastName, city, state
+from Person pe
+left join ad
+on pe.personId = ad.personId;
