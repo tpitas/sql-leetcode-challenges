@@ -1,3 +1,4 @@
+/*
 Table: Employee
 
 +-------------+------+
@@ -45,3 +46,20 @@ Output:
 +---------------------+
 | null                |
 +---------------------+
+
+*/
+-- solution
+
+create table employee (
+    id int,
+    salary numeric
+);
+
+insert into employee values 
+(1, 100),
+(2, 200),
+(3, 300);
+
+select max(salary) as SecondHighestSalary
+from employee
+where salary < (select max(salary) from employee);
