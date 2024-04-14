@@ -37,3 +37,22 @@ Employees with Id 1,2,3 are part of a team with team_id = 8.
 Employees with Id 4 is part of a team with team_id = 7.
 Employees with Id 5,6 are part of a team with team_id = 9.
 */
+
+-- solution
+-- create employee table
+create table employee
+(
+employee_id integer,
+team_id integer
+);
+
+-- insert records into employee
+insert into employee(employee_id, team_id) values
+(1,8),(2,8),(3,8),(4,7),(5,9),(6,9);
+
+-- 
+select
+    employee_id,
+    count(*) over (partition by team_id) as team_size
+from Employee
+order by employee_id;
