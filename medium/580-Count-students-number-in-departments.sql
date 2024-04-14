@@ -48,3 +48,39 @@ The Output should be:
 
 */
 
+-- solution
+-- create student table
+
+create table student
+(
+student_id  int ,
+student_name varchar (55) ,
+gender char(1),
+dept_id int 
+);
+
+create table department
+(
+dept_id  int,  
+dept_name  varchar (55)
+);
+
+-- insert records into student table
+insert into student (student_id, student_name, gender, dept_id ) values 
+(1 , 'Jack' , 'M' , 1), 
+(2 , 'Jane' , 'F' , 1), 
+(3 , 'Mark' , 'M' , 2);
+
+-- insert records into department table
+insert into department (dept_id, dept_name) values
+(1 , 'Engineering'),
+(2 , 'Science'),
+(3 , 'Law');
+
+-- 
+select dept_name, count(st.dept_id) as student_number
+from department dep 
+left join student st
+on dep.dept_id = st.dept_id
+group by dep.dept_name
+order by count(st.dept_id) desc, dept_name;
