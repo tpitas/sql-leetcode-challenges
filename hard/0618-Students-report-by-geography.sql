@@ -21,3 +21,22 @@ For the sample input, the output is:
 +---------+------+--------+
 */
 
+-- solution
+create table student(
+	name varchar(55),
+	continent varchar(55)
+);
+
+insert into student values
+('Jane  ' , 'America'),
+('Pascal' , 'Europe '),
+('Xi    ' , 'Asia   '),
+('Jack  ' , 'America');
+
+select min(case when continent = 'America' then name end) as America,
+min(case when continent = 'Asia' then name end) as Asia,
+min(case when continent = 'Europe' then name end) as Europe
+from 
+	(select *, row_number() over(partition by continent order by name) as rn
+	from student) a
+group by rn ;
