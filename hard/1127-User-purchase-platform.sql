@@ -40,3 +40,45 @@ On 2019-07-01, user 1 purchased using both desktop and mobile, user 2 purchased 
 On 2019-07-02, user 2 purchased using mobile only, user 3 purchased using desktop only and no one purchased using both platforms.
 */
 
+-- solution
+
+create table spending (
+user_id       int,   
+spend_date   date,
+platform     varchar,
+amount       int 
+); 
+
+insert into spending  values 
+(1 , '2019-07-01' , 'mobile ' ,100),
+(1 , '2019-07-01' , 'desktop' ,100),
+(2 , '2019-07-01' , 'mobile ' ,100),
+(2 , '2019-07-02' , 'mobile ' ,100),
+(3 , '2019-07-01' , 'desktop' ,100),
+(3 , '2019-07-02' , 'desktop' ,100);
+
+with cte
+    as (select user_id, spend_date,
+            max(platform) as platform, sum(amount) as amount
+        from spending
+        group by user_id, spend_date
+        having count(distinct platform) = 1
+        union
+        select user_id, spend_date,
+            'both' as platform, sum(amount) as amount
+        from spending
+        group by user_id,spend_date
+        having count(platform) = 2
+        union
+        select null as user_id, spend_date,
+            'both' as platform, 0 as amount
+        from spending
+        group by spend_date
+        )
+
+select spend_date, platform,
+    sum(amount)    as total_amount,
+    count(user_id) as total_users
+from   cte
+group by spend_date, platform
+order by spend_date, platform desc;
