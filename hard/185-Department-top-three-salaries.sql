@@ -76,3 +76,42 @@ In the Sales department:
 - There is no third-highest salary as there are only two employees
 */
 
+-- solution
+create table employee
+(
+	id  int primary key,
+	name  varchar ,
+	salary int,
+	departmentId int
+);
+
+create table department
+(
+	id  int,  
+	name   varchar,
+	foreign key (id)
+	references employee(id)
+);
+
+insert into employee (id, name, salary, departmentId) values
+(1  , 'Joe   ' ,  85000 , 1 ),
+(2  , 'Henry ' ,  80000 , 2 ),
+(3  , 'Sam   ' ,  60000 , 2 ),
+(4  , 'Max   ' ,  90000 , 1 ),
+(5  , 'Janet ' ,  69000 , 1 ),
+(6  , 'Randy ' ,  85000 , 1 ),
+(7  , 'Will  ' ,  70000 , 1 );
+
+insert into department (id, name) values
+(1 , 'IT   ') ,
+(2 , 'Sales') ;
+
+
+select a.department, a.employee, a.salary
+from (
+	select dep.name as department, emp.name as employee, salary, 
+	    dense_rank() over(partition by dep.name order by salary desc) as rk
+	from employee as emp join department as dep
+	on emp.departmentid = dep.id
+) a
+where a.rk < 4 ;
